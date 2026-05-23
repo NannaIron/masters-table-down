@@ -1,0 +1,21 @@
+.appbase {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.butao {
+  padding: 7px 10px;
+  background-color: orange;
+  color: black;
+  border-radius: 5px;
+  cursor: pointer;
+  outline: 1px solid yellow;
+  transition: background-color 0.3s ease;
+}
+
+.butao:hover {
+  background-color: yellow;
+  outline: 3px solid orange;
+}

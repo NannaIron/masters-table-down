@@ -5,8 +5,14 @@ import { RouterOutlet } from '@angular/router';
   selector: 'app-root',
   imports: [RouterOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
 })
 export class App {
   protected readonly title = signal('masters-table-down');
+
+  backgr = 'white';
+
+  changeBackground() {
+    this.backgr = this.backgr === 'white' ? 'black' : 'white';
+  }
 }
