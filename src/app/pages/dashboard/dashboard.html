@@ -1,4 +1,5 @@
-<div class="dashboard">
+<div class="dashboard" [style.background-color]="bg">
   <h1>Dashboard</h1>
+  <button class="change-btn" (click)="changeBg()">Mudar</button>
   <button class="logout-btn" (click)="logout()">Sair</button>
 </div>

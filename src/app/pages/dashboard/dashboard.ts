@@ -9,10 +9,16 @@ import { AuthService } from '../../../services/auth.service';
   styleUrl: './dashboard.scss',
 })
 export class Dashboard {
+  bg = '#1a1612';
+
   constructor(
     private auth: AuthService,
     private router: Router,
   ) {}
+
+  changeBg(): void {
+    this.bg = this.bg === '#1a1612' ? 'black' : '#1a1612';
+  }
 
   logout(): void {
     const token = localStorage.getItem('token') ?? '';
