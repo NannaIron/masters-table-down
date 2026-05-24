@@ -70,6 +70,23 @@
   }
 }
 
+.back-btn {
+  background: transparent;
+  border: none;
+  color: rgba(210, 170, 100);
+  font-weight: bolder;
+  font-family: 'Cinzel', serif;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: rgba(210, 170, 100, 0.9);
+  }
+}
+
 .error-msg {
   color: rgba(220, 80, 80, 0.9);
   font-family: 'Cinzel', serif;
