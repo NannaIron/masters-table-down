@@ -5,7 +5,6 @@
     [style.transform-origin]="mapTransformOrigin"
   >
     <img src="/map/map.jpeg" class="map-image" alt="Mapa" />
-
     <button
       *ngFor="let point of mapPoints"
       class="map-point"
@@ -18,9 +17,11 @@
   </div>
 </div>
 
-<div *ngIf="showLogin && zoomedPoint" (closeEvent)="closeLogin()">
-  <ng-container
-    [ngComponentOutlet]="zoomedPoint.loginComponent"
+<ng-container *ngIf="showLogin && zoomedPoint">
+  <app-teste-login
+    *ngIf="zoomedPoint.label === 'teste'"
     (closeEvent)="closeLogin()"
-  ></ng-container>
-</div>
+  ></app-teste-login>
+
+  <app-login *ngIf="zoomedPoint.label !== 'teste'" (closeEvent)="closeLogin()"></app-login>
+</ng-container>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgFor, NgIf, NgComponentOutlet } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Login } from '../login/login';
 import { TesteLogin } from '../login/teste-login/teste-login';
@@ -15,12 +15,13 @@ export interface MapPoint {
 
 @Component({
   selector: 'app-base',
-  imports: [NgFor, NgIf, NgComponentOutlet],
+  imports: [NgFor, NgIf, Login, TesteLogin],
   templateUrl: './base.html',
   styleUrl: './base.scss',
 })
 export class Base implements OnInit {
   showLogin = false;
+  isZoomedIn = false;
   zoomedPoint: MapPoint | null = null;
 
   mapPoints: MapPoint[] = [
@@ -50,6 +51,7 @@ export class Base implements OnInit {
         const point = this.mapPoints.find((p) => p.label === label);
         if (point) {
           this.zoomedPoint = point;
+          this.isZoomedIn = true;
           this.showLogin = true;
         }
       }
@@ -57,8 +59,7 @@ export class Base implements OnInit {
   }
 
   get mapTransform(): string {
-    if (!this.zoomedPoint) return 'scale(1)';
-    return 'scale(3)';
+    return this.isZoomedIn ? 'scale(3)' : 'scale(1)';
   }
 
   get mapTransformOrigin(): string {
@@ -68,6 +69,7 @@ export class Base implements OnInit {
 
   onPointClick(point: MapPoint): void {
     this.zoomedPoint = point;
+    this.isZoomedIn = true;
     if (point.opensLogin) {
       this.router.navigate([point.label]);
       this.showLogin = true;
@@ -76,9 +78,11 @@ export class Base implements OnInit {
 
   closeLogin(): void {
     this.showLogin = false;
-    this.zoomedPoint = null;
+    this.isZoomedIn = false;
+
     setTimeout(() => {
+      this.zoomedPoint = null;
       this.router.navigate(['']);
-    }, 600);
+    }, 650);
   }
 }
