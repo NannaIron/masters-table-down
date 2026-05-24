@@ -26,8 +26,9 @@ export class TypeLogin {
     this.error = false;
     this.loading = true;
     this.auth.typeLogin(this.token, type).subscribe({
-      next: () => {
+      next: (res) => {
         this.loading = false;
+        localStorage.setItem('token', res.token);
         this.router.navigate(['/dashboard']);
       },
       error: () => {

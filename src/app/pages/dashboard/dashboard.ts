@@ -17,8 +17,14 @@ export class Dashboard {
   logout(): void {
     const token = localStorage.getItem('token') ?? '';
     this.auth.logout(token).subscribe({
-      next: () => this.router.navigate(['/']),
-      error: () => this.router.navigate(['/']),
+      next: () => {
+        localStorage.removeItem('token');
+        this.router.navigate(['/']);
+      },
+      error: () => {
+        localStorage.removeItem('token');
+        this.router.navigate(['/']);
+      },
     });
   }
 }
