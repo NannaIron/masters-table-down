@@ -1,0 +1,21 @@
+<div class="map-wrapper">
+  <div
+    class="map-zoom"
+    [style.transform]="mapTransform"
+    [style.transform-origin]="mapTransformOrigin"
+  >
+    <img src="/map/map.jpeg" class="map-image" alt="Mapa" />
+
+    <button
+      *ngFor="let point of mapPoints"
+      class="map-point"
+      [class.has-action]="point.opensLogin"
+      [style.left.%]="point.xPercent"
+      [style.top.%]="point.yPercent"
+      [attr.title]="point.label"
+      (click)="onPointClick(point)"
+    ></button>
+  </div>
+</div>
+
+<app-login *ngIf="showLogin" (closeEvent)="closeLogin()"></app-login>
