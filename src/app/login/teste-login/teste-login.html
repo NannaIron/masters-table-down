@@ -1,15 +1,23 @@
-<div class="overlay" (click)="close()">
-  <div class="login-box" (click)="$event.stopPropagation()">
+<div class="overlay" (click)="step === 'login' ? close() : null">
+  <div class="login-box" *ngIf="step === 'login'" (click)="$event.stopPropagation()">
     <div class="corner tl"></div>
     <div class="corner tr"></div>
     <div class="corner bl"></div>
     <div class="corner br"></div>
 
     <div class="field-wrap">
-      <input type="text" placeholder="Código" />
+      <input type="text" placeholder="Código" [(ngModel)]="code" />
     </div>
+    <p class="error-msg" *ngIf="error">Login inválido</p>
     <div class="btn-wrap">
-      <button>Entrar</button>
+      <button (click)="submit()" [disabled]="loading">Entrar</button>
     </div>
   </div>
+
+  <app-type-login
+    *ngIf="step === 'type-select'"
+    [token]="pendingToken"
+    [types]="availableTypes"
+    (closeEvent)="close()"
+  ></app-type-login>
 </div>

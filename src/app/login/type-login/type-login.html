@@ -1,0 +1,12 @@
+<div class="login-box" (click)="$event.stopPropagation()">
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+
+  <div class="type-buttons">
+    <button *ngFor="let type of types" class="type-btn" (click)="select(type)">{{ type }}</button>
+  </div>
+
+  <p class="error-msg" *ngIf="error">Erro ao selecionar tipo</p>
+</div>
