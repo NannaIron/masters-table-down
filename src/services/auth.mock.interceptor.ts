@@ -1,10 +1,10 @@
-import { HttpInterceptorFn, HttpResponse } from '@angular/common/http';
-import { of } from 'rxjs';
+import { HttpInterceptorFn, HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { of, throwError } from 'rxjs';
 
 const mocks: Record<string, unknown> = {
-  'POST /auth/login-user': {
+  'POST /auth/login-user:MESA-001': {
     type: ['DM', 'PLAYER'],
-    token: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtZXNhLTAwMSIsInN0YXR1cyI6InBlbmRpbmcifQ.mock_loginuser',
+    token: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtZXNhLTAwMSIsInN0YXR1cyI6InBlbmRpbmcifQ.mock_dm_mesa',
   },
   'POST /auth/login:player': {
     type: ['PLAYER'],
@@ -30,25 +30,47 @@ const mocks: Record<string, unknown> = {
   },
 };
 
+const AUTH_PATHS = ['/auth/login', '/auth/login-user', '/auth/type-login', '/auth/logout'];
+
+const invalid = () => throwError(() => new HttpErrorResponse({ status: 401 }));
+
 export const authMockInterceptor: HttpInterceptorFn = (req, next) => {
   const path = req.url.replace('https://api.masters-table.placeholder/v1', '');
   const key = `${req.method} ${path}`;
   let mockKey = key;
 
   if (path === '/auth/login') {
-    const body = req.body as { email: string };
-    mockKey = body.email.startsWith('dm') ? `${key}:dm` : `${key}:player`;
+    const body = req.body as { email: string; pass: string };
+    if (body.email === 'dm@mock.com' && body.pass === 'dm123') {
+      mockKey = `${key}:dm`;
+    } else if (body.email === 'player@mock.com' && body.pass === 'player123') {
+      mockKey = `${key}:player`;
+    } else {
+      return invalid();
+    }
+  }
+
+  if (path === '/auth/login-user') {
+    const body = req.body as { code: string };
+    if (body.code === 'MESA-001') {
+      mockKey = `${key}:MESA-001`;
+    } else {
+      return invalid();
+    }
   }
 
   if (path === '/auth/type-login') {
     const body = req.body as { token: string; type: string };
-    const account =
-      body.token.includes('dm_player') || body.token.includes('as_dm') ? 'dm' : 'player';
-    mockKey = `${key}:${body.type}:${account}`;
+    const isDm = body.token.includes('mock_dm');
+    mockKey = `${key}:${body.type}:${isDm ? 'dm' : 'player'}`;
   }
 
   if (mockKey in mocks) {
     return of(new HttpResponse({ status: 200, body: mocks[mockKey] }));
+  }
+
+  if (AUTH_PATHS.some((p) => path.startsWith(p))) {
+    return invalid();
   }
 
   return next(req);
