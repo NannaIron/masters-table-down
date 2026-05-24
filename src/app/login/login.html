@@ -1,6 +1,18 @@
 <div class="overlay" (click)="close()">
   <div class="login-box" (click)="$event.stopPropagation()">
-    <input type="text" placeholder="Usuário" />
-    <button>Entrar</button>
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
+
+    <div class="field-wrap">
+      <input type="email" placeholder="Email" />
+    </div>
+    <div class="field-wrap">
+      <input type="password" placeholder="Senha" />
+    </div>
+    <div class="btn-wrap">
+      <button (click)="close()">Entrar</button>
+    </div>
   </div>
 </div>
