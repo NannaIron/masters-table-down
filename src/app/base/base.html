@@ -18,4 +18,9 @@
   </div>
 </div>
 
-<app-login *ngIf="showLogin" (closeEvent)="closeLogin()"></app-login>
+<div *ngIf="showLogin && zoomedPoint" (closeEvent)="closeLogin()">
+  <ng-container
+    [ngComponentOutlet]="zoomedPoint.loginComponent"
+    (closeEvent)="closeLogin()"
+  ></ng-container>
+</div>

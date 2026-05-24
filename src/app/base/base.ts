@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { NgFor, NgIf } from '@angular/common';
+import { NgFor, NgIf, NgComponentOutlet } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Login } from '../login/login';
+import { TesteLogin } from '../login/teste-login/teste-login';
 
 export interface MapPoint {
   id: number;
@@ -9,11 +10,12 @@ export interface MapPoint {
   yPercent: number;
   label: string;
   opensLogin: boolean;
+  loginComponent: any;
 }
 
 @Component({
   selector: 'app-base',
-  imports: [NgFor, NgIf, Login],
+  imports: [NgFor, NgIf, NgComponentOutlet],
   templateUrl: './base.html',
   styleUrl: './base.scss',
 })
@@ -22,11 +24,18 @@ export class Base implements OnInit {
   zoomedPoint: MapPoint | null = null;
 
   mapPoints: MapPoint[] = [
-    { id: 1, xPercent: 32, yPercent: 28, label: 'teste', opensLogin: true },
-    { id: 2, xPercent: 38, yPercent: 55, label: '1', opensLogin: true },
-    { id: 3, xPercent: 52, yPercent: 20, label: '2', opensLogin: true },
-    { id: 4, xPercent: 70, yPercent: 65, label: '3', opensLogin: true },
-    { id: 5, xPercent: 85, yPercent: 40, label: '4', opensLogin: true },
+    {
+      id: 1,
+      xPercent: 32,
+      yPercent: 28,
+      label: 'teste',
+      opensLogin: true,
+      loginComponent: TesteLogin,
+    },
+    { id: 2, xPercent: 38, yPercent: 55, label: '1', opensLogin: true, loginComponent: Login },
+    { id: 3, xPercent: 52, yPercent: 20, label: '2', opensLogin: true, loginComponent: Login },
+    { id: 4, xPercent: 70, yPercent: 65, label: '3', opensLogin: true, loginComponent: Login },
+    { id: 5, xPercent: 85, yPercent: 40, label: '4', opensLogin: true, loginComponent: Login },
   ];
 
   constructor(
@@ -68,7 +77,6 @@ export class Base implements OnInit {
   closeLogin(): void {
     this.showLogin = false;
     this.zoomedPoint = null;
-
     setTimeout(() => {
       this.router.navigate(['']);
     }, 600);
